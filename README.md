@@ -22,12 +22,16 @@ Ferbic Pyloader é uma ferramenta para gerenciar scripts Python, permitindo que 
 4. Acesse a aplicação no seu navegador através de `http://localhost:1007` (ou substitua pela porta configurada).
 
 ### Usando Docker Hub
-Se preferir usar uma imagem já publicada no Docker Hub:
+Se preferir usar a imagem já publicada no Docker Hub:
 1. Execute o comando:
     ```bash
-    docker run -d -p 1007:1007 --name ferbic_pyloader <docker_hub_image>
+    docker run -d -p 1007:1007 --name ferbic_pyloader ferbic/ferbic_pyloader
     ```
-   (Substitua `<docker_hub_image>` pelo nome da imagem do Docker Hub).
+   (Esse comando usará a imagem já publicada no Docker Hub com o nome `ferbic/ferbic_pyloader`).
+
+### Usando GitHub
+Se preferir clonar o repositório diretamente do GitHub:
+1. Acesse o repositório [hFerbic/ferbic_pyloader](https://github.com/hFerbic/ferbic_pyloader) para obter o código.
 
 ## Configurações
 - A aplicação irá criar um arquivo `users.json` para gerenciar usuários e senhas.
