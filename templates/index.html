@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferbic Pyloader - Cyberpunk Edition</title>
 
+    <!-- Link para o arquivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Google Fonts: Orbitron for a futuristic look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Link para o ícone da aplicação -->
+    <link rel="icon" href="/icons/pyloader.png" type="image/png">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <!-- Link para fazer logout -->
+            <a href="{{ url_for('logout') }}" class="btn" style="float: right;">Logout</a>
+            <h1>Ferbic Pyloader</h1>
+        </header>
+
+        <h2>Scripts Carregados</h2>
+
+        <table id="script-table">
+            <thead>
+                <tr>
+                    <th>Ícone</th>
+                    <th>Nome</th>
+                    <th>Arquivo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Conteúdo dinâmico será atualizado pelo JavaScript -->
+            </tbody>
+        </table>
+
+        <h2>Carregar Novo Script</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" id="script_name" name="script_name" class="form-control" placeholder="Nome do Script" required>
+            </div>
+
+            <!-- Botão de Escolher Ícone com espaçamento -->
+            <div class="file-upload-wrapper" style="margin-bottom: 20px;">
+                <button type="button" id="chooseIconButton" class="btn file-upload-button">Escolher Ícone</button>
+                <input type="file" id="script_icon" name="script_icon" class="file-upload-input" accept="image/*" style="display:none;">
+                <span class="file-upload-text" id="icon-upload-text">Nenhum ícone escolhido</span>
+            </div>
+
+            <!-- Botão de Escolher Arquivo com espaçamento -->
+            <div class="file-upload-wrapper" style="margin-bottom: 20px;">
+                <button type="button" id="chooseFileButton" class="btn file-upload-button">Escolher Arquivo</button>
+                <input type="file" id="script_file" name="script_file" class="file-upload-input" accept=".py" required style="display:none;">
+                <span class="file-upload-text" id="file-upload-text">Nenhum arquivo escolhido</span>
+            </div>
+
+            <!-- Botão Carregar Script -->
+            <button type="submit" class="btn" style="margin-top: 20px;">Carregar Script</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Ferbic Pyloader - Cyberpunk Edition</p>
+    </footer>
+
+    <!-- Modal customizado para confirmar exclusão -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Tem certeza de que deseja excluir o script "<span id="scriptToDelete"></span>"?</h3>
+            <button class="btn-confirm" onclick="confirmDelete()">Confirmar</button>
+            <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal customizado para notificações -->
+    <div id="notificationModal" class="modal">
+        <div class="notification-content">
+            <p id="notificationMessage">Mensagem de notificação</p>
+            <button class="btn-close" onclick="closeNotification()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Link para o arquivo JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        // Atualiza a tabela de scripts a cada 5 segundos para verificar o status
+        function fetchStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => updateTable(data))
+                .catch(error => console.error('Erro ao buscar status:', error));
+        }
+
+        // Atualiza a tabela com os dados dos scripts
+        function updateTable(scripts) {
+            const tableBody = document.querySelector('#script-table tbody');
+            tableBody.innerHTML = '';  // Limpa a tabela existente
+
+            Object.keys(scripts).forEach(script_name => {
+                const script_data = scripts[script_name];
+                const status = script_data.process ? 'Executando' : 'Parado';
+                const icon = script_data.icon ? `<img src="/icons/${script_data.icon}" class="icon-img">` : 'N/A';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${icon}</td>
+                    <td>${script_name}</td>
+                    <td>${script_data.real_name}</td>
+                    <td>${status}</td>
+                    <td>
+                        <button class="btn" onclick="startScript('${script_name}')">Iniciar</button>
+                        <button class="btn btn-danger" onclick="stopScript('${script_name}')">Parar</button>
+                        <button class="btn-delete" onclick="openDeleteModal('${script_name}')">Excluir</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Atualiza o status a cada 5 segundos
+        setInterval(fetchStatus, 5000);
+        fetchStatus(); // Chama fetchStatus assim que a página carrega
+
+        // Script para iniciar e parar scripts
+        function startScript(script_name) {
+            fetch('/start', {
+                method: 'POST',
+                body: new URLSearchParams({ script_name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+                fetchStatus();  // Atualiza a tabela após iniciar o script
+            });
+        }
+
+        function stopScript(script_name) {
+            fetch('/stop', {
+                method: 'POST',
+                body: new URLSearchParams({ script_name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+                fetchStatus();  // Atualiza a tabela após parar o script
+            });
+        }
+
+        // Script para atualizar o texto do botão ao selecionar um arquivo
+        const fileInput = document.getElementById('script_file');
+        const iconInput = document.getElementById('script_icon');
+        const fileUploadText = document.getElementById('file-upload-text');
+        const iconUploadText = document.getElementById('icon-upload-text');
+
+        const chooseFileButton = document.getElementById('chooseFileButton');
+        const chooseIconButton = document.getElementById('chooseIconButton');
+
+        chooseFileButton.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        chooseIconButton.addEventListener('click', function() {
+            iconInput.click();
+        });
+
+        fileInput.addEventListener('change', function() {
+            fileUploadText.textContent = fileInput.files[0] ? fileInput.files[0].name : 'Nenhum arquivo escolhido';
+        });
+
+        iconInput.addEventListener('change', function() {
+            iconUploadText.textContent = iconInput.files[0] ? iconInput.files[0].name : 'Nenhum ícone escolhido';
+        });
+    </script>
+</body>
+</html>
