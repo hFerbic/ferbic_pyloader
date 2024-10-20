@@ -1,1 +1,276 @@
+body {
+    background: linear-gradient(135deg, #0d0d0d 25%, #1a1a1a);  /* Foco no ciano e tons neutros */
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
 
+h1, h2 {
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+    margin-bottom: 20px;
+}
+
+.container {
+    background-color: rgba(30, 30, 30, 0.8);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    width: 80%;
+    max-width: 900px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    color: #f0f0f0;
+}
+
+table, th, td {
+    border: none;
+    padding: 10px;
+}
+
+th {
+    color: #00ffcc;
+    background-color: #141414;
+    text-align: left;
+}
+
+td {
+    background-color: #1f1f1f;
+}
+
+tr:nth-child(even) td {
+    background-color: #242424;
+}
+
+/* Botões gerais */
+.btn {
+    background-color: #00ffcc;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s ease;
+    display: inline-block;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Animação ao passar o mouse */
+.btn:hover {
+    background-color: #00a3a3;
+    box-shadow: 0 0 15px #00ffcc;
+    transform: scale(1.1);
+}
+
+/* Botão de ação perigosa */
+.btn-danger {
+    background-color: #ff3333;
+}
+
+.btn-danger:hover {
+    background-color: #cc0000;
+    box-shadow: 0 0 15px #ff3333;
+    transform: scale(1.1);
+}
+
+/* Botão de exclusão */
+.btn-delete {
+    background-color: #ff3333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s ease;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.btn-delete:hover {
+    background-color: #cc0000;
+    box-shadow: 0 0 15px #ff3333;
+    transform: scale(1.1);
+}
+
+.form-control {
+    background-color: #222;
+    border: none;
+    border-bottom: 2px solid #00ffcc;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.form-control:focus {
+    border-bottom-color: #00a3a3;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+/* Upload de arquivo e ícone */
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;  /* Garante que o texto e o botão fiquem alinhados */
+    align-items: center;
+}
+
+.file-upload-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: auto; /* Limitar a largura ao tamanho do botão */
+    height: 50px;
+    cursor: pointer;
+    z-index: 2; /* O input invisível deve ter um z-index acima do botão */
+}
+
+.file-upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #00ffcc;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    transition: 0.4s ease;
+    z-index: 1;  /* O botão deve estar abaixo do input invisível */
+    position: relative;
+}
+
+.file-upload-button:hover {
+    background-color: #00a3a3;
+    box-shadow: 0 0 15px #00ffcc;
+    transform: scale(1.1);
+}
+
+.file-upload-text {
+    margin-left: 20px;
+    color: #f0f0f0;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 0;
+    position: relative;
+}
+
+
+.icon-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Modal personalizado */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.modal h3 {
+    color: #00ffcc;
+}
+
+.btn-confirm, .btn-cancel {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-confirm {
+    background-color: #00ffcc;
+    color: #000;
+}
+
+.btn-confirm:hover {
+    background-color: #00a3a3;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+.btn-cancel {
+    background-color: #cccccc;
+    color: #000;
+}
+
+.btn-cancel:hover {
+    background-color: #aaaaaa;
+}
+
+/* Modal de notificação */
+.notification-content {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.notification-content p {
+    font-size: 18px;
+}
+
+.btn-close {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #00ffcc;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-close:hover {
+    background-color: #00a3a3;
+    box-shadow: 0 0 15px #00ffcc;
+}
