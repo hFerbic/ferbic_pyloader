@@ -1,0 +1,45 @@
+name: ferbic_pyloader
+services:
+    ferbic-pyloader:
+        build:
+            context: /DATA/AppData/ferbic_pyloader
+            dockerfile: Dockerfile
+        cpu_shares: 90
+        command: []
+        container_name: ferbic-pyloader-container
+        deploy:
+            resources:
+                limits:
+                    memory: "25143803904"
+        hostname: ferbic-pyloader-container
+        image: ferbic-pyloader:latest
+        labels:
+            icon: https://drive.google.com/uc?id=1Foj-WwXVuS5k8FE7XSYLB9GqLx79i9H-
+        networks:
+            default: null
+        ports:
+            - mode: ingress
+              target: 1007
+              published: "1007"
+              protocol: tcp
+        restart: unless-stopped
+        volumes:
+            - type: bind
+              source: /DATA/AppData/ferbic_pyloader
+              target: /ferbic_pyloader
+              bind:
+                create_host_path: true
+networks:
+    default:
+        name: ferbic_pyloader_default
+x-casaos:
+    author: Hiatan Ferbic
+    category: self
+    hostname: 129.151.33.39
+    icon: https://drive.google.com/uc?id=1Foj-WwXVuS5k8FE7XSYLB9GqLx79i9H-
+    index: /
+    is_uncontrolled: false
+    port_map: "1007"
+    scheme: http
+    title:
+        custom: Ferbic Pyloader

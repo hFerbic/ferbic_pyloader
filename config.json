@@ -1,0 +1,23 @@
+{
+    "version": "1.0",
+    "image": "ferbic-pyloader",
+    "name": "Ferbic Pyloader",
+    "description": "Gerenciador de Scripts Python, Ferbic Pyloader para CasaOS.",
+    "developer": "Hiatan Ferbic em colaboração com ChatGPT",
+    "port_map": {
+        "1007": "1007"
+    },
+    "icon": "https://via.placeholder.com/150", 
+    "network_model": "bridge",
+    "volumes": [
+        {
+            "container": "/app", 
+            "bind": "/mnt/data/ferbic_pyloader"
+        }
+    ],
+    "env": [],
+    "privileged": false,
+    "cap_add": [],
+    "devices": [],
+    "web_ui": "/"
+}

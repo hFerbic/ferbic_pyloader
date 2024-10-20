@@ -1,0 +1,5 @@
+Flask
+watchdog
+discord
+psutil
+flask_login

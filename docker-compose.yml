@@ -1,0 +1,51 @@
+version: '3'
+services:
+  ferbic-pyloader:
+    build:
+      context: ${PWD}/ferbic_pyloader
+      dockerfile: Dockerfile
+    cpu_shares: 90
+    command: []
+    container_name: ferbic-pyloader-container
+    deploy:
+      resources:
+        limits:
+          memory: "25143803904"
+    hostname: ferbic-pyloader-container
+    image: ferbic-pyloader:latest
+    labels:
+      icon: https://i.imgur.com/eG3htFH.png
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 1007
+        published: "1007"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${PWD}/ferbic_pyloader  # Monta o diretório principal
+        target: /ferbic_pyloader
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${PWD}/ferbic_pyloader/users.json  # Certifique-se de que o arquivo existe
+        target: /app/users.json  # Monta como um arquivo
+        bind:
+          create_host_path: false  # Não criar como diretório
+networks:
+  default:
+    name: ferbic_pyloader_default
+
+x-casaos:
+  author: Hiatan Ferbic
+  category: self
+  # hostname can be set dynamically
+  icon: https://i.imgur.com/eG3htFH.png
+  index: /
+  is_uncontrolled: false
+  port_map: "1007"
+  scheme: http
+  title:
+    custom: Ferbic Pyloader
