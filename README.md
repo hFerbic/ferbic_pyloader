@@ -1,4 +1,6 @@
+# Ferbic Pyloader
 
+![Docker Icon](https://i.imgur.com/eG3htFH.png)
 # Ferbic Pyloader
 
 Ferbic Pyloader é uma ferramenta para gerenciar scripts Python, permitindo que você faça upload, execute e monitore scripts Python facilmente.
